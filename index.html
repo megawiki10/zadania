@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <script>
+        const username = 'megawiki10';
+        const repoName = 'zadania';
+
+        const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
+
+        async function render() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const container = document.querySelectorAll('div')[0]
+
+                const fileNames = data
+                    .filter(item => item.type === 'file' && item.name.endsWith('.html') && item.name!='index.html')
+                    .map(item => item.name);
+                fileNames.forEach(name => {
+                    let button = document.createElement('button')
+                    button.classList.add('fade')
+                    button.innerHTML = name
+                    button.setAttribute('onclick',`window.location.href='${name}'`)
+                    container.appendChild(button)
+                    setTimeout(() => {
+                        button.classList.remove('fade')
+                    }, 500);
+                });
+            } catch (error) {
+                console.error('Error fetching data from GitHub API:', error);
+            }
+        }
+        render();
+    </script>
+    <style>
+        div {
+            position: absolute;
+            width: 70%;
+            left: 50%;
+            top: 50px;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        button {
+            margin: 2%;
+            width: 46%;
+            height: 70px;
+            background-color: rgb(255, 240, 216);
+            border-radius: 20px;
+            transition: 200ms ease;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 30px;
+        }
+        button:hover,:focus {
+            background-color: rgb(219, 207, 186);
+            font-size: 35px;
+            transform: scale(98%,98%);
+        }
+        .fade {
+            animation: fade 0.5s ease;
+        }
+        @keyframes fade {
+            0% {
+                opacity: 0%;
+            }
+            100% {
+                opacity: 100%;
+            }
+        }
+    </style>
+    <body style="background-color: bisque;">
+        <div></div>
+    </body>
+</html>
