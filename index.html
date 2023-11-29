@@ -1,2 +1,24 @@
 <!DOCTYPE html>
-<html><script>let fs = require('fs');console.log(fs.readdirSync('./'));</script></html>
+<html><script>
+        const username = 'megawiki10';
+        const repoName = 'zadania';
+
+        const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
+
+        async function fetchFileNames() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                const fileNames = data
+                    .filter(item => item.type === 'file' && item.name.endsWith('.html'))
+                    .map(item => item.name);
+
+                console.log(fileNames);
+            } catch (error) {
+                console.error('Error fetching data from GitHub API:', error);
+            }
+        }
+
+        fetchFileNames();
+    </script></html>
