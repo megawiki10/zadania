@@ -11,7 +11,7 @@
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 const container = document.querySelectorAll('div')[0]
-
+                console.log(data)
                 const fileNames = data
                     .filter(item => item.type === 'file' && item.name.endsWith('.html') && item.name!='index.html')
                     .map(item => item.name);
